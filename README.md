@@ -1,6 +1,6 @@
 # context-awesome : awesome references for your agents
 
-A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 3M+ awesome row items.
+A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 1mn+ (growing) awesome row items.
 
 Perfect for : 
 1. Knowledge worker agents to get the most relevant references for their work
@@ -21,7 +21,7 @@ This MCP server connects to backend API service that handles the heavy lifting o
 - **Ranking & Relevance**: Smart algorithms for ranking resources based on quality signals and relevance
 - **API Service**: High-performance API endpoints for searching and retrieving awesome list content
 
-The backend service will be open-sourced soon, enabling the community to contribute to and benefit from the complete context-awesome ecosystem. Actively working on improving the ranking, relevance, indexing to a minimum state on the backend. 
+The backend service will be open-sourced soon, enabling the community to contribute to and benefit from the complete context-awesome ecosystem. Actively working on improving the parsing, ranking, relevance, indexing for the backend. 
 
 
 ## Installation
@@ -128,11 +128,10 @@ Discovers sections and categories across awesome lists matching your search quer
 - `limit` (optional): Maximum sections to return (1-50, default: 10)
 
 **Example Usage:**
-```
-"Show me the best machine learning resources"
+"Give me the best machine learning resources for learning ML related to python in couple of months."
+"What are the best resources for authoring technical books ?"
 "Find awesome list sections about React hooks"
-"Search for database tools in Go awesome lists"
-```
+"Search for database ORMs in Go awesome lists"
 
 ### 2. `get_awesome_items`
 
