@@ -8,6 +8,9 @@ Perfect for :
 3. Deep research can quickly gather a lot of high quality resources for any topic.
 4. Search agents
 
+https://github.com/user-attachments/assets/babab991-e4ff-4433-bdb7-eb7032e9cd11
+
+
 ## Architecture
 
 This MCP server connects to backend API service that handles the heavy lifting of awesome list processing. The backend infrastructure manages:
