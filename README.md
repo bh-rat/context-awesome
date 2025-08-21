@@ -1,52 +1,68 @@
-# Awesome Context MCP Server
+# context-awesome : awesome references for your agents
 
-An MCP (Model Context Protocol) server that provides access to curated awesome list documentation through intelligent search and retrieval tools.
+A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 3M+ awesome row items.
 
-## Features
+Perfect for : 
+1. Knowledge worker agents to get the most relevant references for their work
+2. The source for the best learning resources
+3. Deep research can quickly gather a lot of high quality resources for any topic.
+4. Search agents
 
-- **Smart Section Discovery**: Find relevant sections across thousands of awesome lists using natural language queries
-- **Token-Limited Retrieval**: Get items from specific lists with configurable token limits for optimal LLM context usage
-- **Multiple Transport Options**: Support for stdio (default), HTTP, and SSE transports
-- **Flexible Configuration**: Configure via environment variables, command-line arguments, or configuration files
-- **Rich Metadata**: Returns comprehensive information including GitHub stars, descriptions, tags, and more
+## Architecture
+
+This MCP server connects to backend API service that handles the heavy lifting of awesome list processing. The backend infrastructure manages:
+
+- **Data Collection & Synchronization**: Automated discovery and synchronization of awesome lists from GitHub
+- **Content Parsing & Extraction**: Intelligent parsing of diverse markdown formats to extract structured data
+- **Storage & Indexing**: Optimized database storage with advanced indexing for fast retrieval
+- **Ranking & Relevance**: Smart algorithms for ranking resources based on quality signals and relevance
+- **API Service**: High-performance API endpoints for searching and retrieving awesome list content
+
+The backend service will be open-sourced soon, enabling the community to contribute to and benefit from the complete context-awesome ecosystem. Actively working on improving the ranking, relevance, indexing to a minimum state on the backend. 
+
 
 ## Installation
 
-### Global Installation
 ```bash
-npm install -g @awesome-context/mcp-server
-```
-
-### Local Installation
-```bash
-npm install @awesome-context/mcp-server
-```
-
-### Development Setup
-```bash
-git clone https://github.com/your-org/awesome-context-mcp.git
-cd awesome-context-mcp
+git clone https://github.com/your-org/context-awesome.git
+cd context-awesome
 npm install
 npm run build
 ```
 
 ## Configuration
 
-### Environment Variables
-- `AWESOME_CONTEXT_API_HOST`: Backend API URL (default: `http://localhost:3000`)
-- `AWESOME_CONTEXT_API_KEY`: Optional API key for backend authentication
+### Running the Server
 
-### Command-Line Arguments
 ```bash
-awesome-context-mcp [options]
+# Development mode (runs from source)
+npm run dev -- [options]
+
+# Production mode (runs compiled version)
+npm run start -- [options]
 
 Options:
   --transport <stdio|http|sse>  Transport mechanism (default: stdio)
   --port <number>               Port for HTTP transport (default: 3000)
-  --api-host <url>             Backend API host
-  --api-key <key>              Optional API key for backend
+  --api-host <url>             Backend API host (default: https://context-awesome.vercel.app)
   --debug                      Enable debug logging
   --help                       Show help
+```
+
+#### Examples
+
+```bash
+# Run with default settings (stdio transport)
+npm run start
+
+# Run with debug logging
+npm run start -- --debug
+
+# Run with HTTP transport on port 3001
+npm run start -- --transport http --port 3001
+
+# Run with custom API host and key
+npm run start -- --api-host https://api.context-awesome.com
 ```
 
 ## MCP Client Configuration
@@ -58,11 +74,11 @@ Add to your Claude Desktop configuration file:
 ```json
 {
   "mcpServers": {
-    "awesome-context": {
-      "command": "npx",
-      "args": ["-y", "@awesome-context/mcp-server"],
+    "context-awesome": {
+      "command": "node",
+      "args": ["/path/to/context-awesome/build/index.js"],
       "env": {
-        "AWESOME_CONTEXT_API_HOST": "https://api.awesome-context.com"
+        "CONTEXT_AWESOME_API_HOST": "https://api.context-awesome.com"
       }
     }
   }
@@ -76,11 +92,11 @@ Add to your settings:
 ```json
 {
   "mcpServers": {
-    "awesome-context": {
+    "context-awesome": {
       "command": "node",
-      "args": ["/path/to/awesome-context-mcp/build/index.js"],
+      "args": ["/path/to/context-awesome/build/index.js"],
       "env": {
-        "AWESOME_CONTEXT_API_HOST": "https://api.awesome-context.com"
+        "CONTEXT_AWESOME_API_HOST": "https://api.context-awesome.com"
       }
     }
   }
@@ -92,7 +108,7 @@ Add to your settings:
 For HTTP transport:
 
 ```bash
-awesome-context-mcp --transport http --port 3001 --api-host https://api.awesome-context.com
+npm run start -- --transport http --port 3001 --api-host https://api.context-awesome.com
 ```
 
 Then configure your client to connect to `http://localhost:3001/mcp`
@@ -110,9 +126,9 @@ Discovers sections and categories across awesome lists matching your search quer
 
 **Example Usage:**
 ```
+"Show me the best machine learning resources"
 "Find awesome list sections about React hooks"
 "Search for database tools in Go awesome lists"
-"Show me machine learning resources"
 ```
 
 ### 2. `get_awesome_items`
@@ -128,36 +144,9 @@ Retrieves items from a specific list or section with token limiting for optimal 
 
 **Example Usage:**
 ```
-"Get items from sindresorhus/awesome"
 "Show me the testing tools section from awesome-rust"
 "Get the next 20 items from awesome-python (offset: 20)"
-```
-
-## Usage Patterns
-
-### Two-Step Discovery Pattern
-
-The server follows a two-step pattern for optimal results:
-
-1. **Discovery**: Use `find_awesome_section` to find relevant sections
-2. **Retrieval**: Use `get_awesome_items` to get detailed items from those sections
-
-### Example Workflow
-
-```typescript
-// Step 1: Find React-related sections
-const sections = await findAwesomeSection({
-  query: "react hooks",
-  confidence: 0.5,
-  limit: 5
-});
-
-// Step 2: Get items from the most relevant section
-const items = await getAwesomeItems({
-  githubRepo: sections[0].githubRepo,
-  section: sections[0].category,
-  tokens: 5000
-});
+"Get items from bh-rat/awesome-mcp-enterprise"
 ```
 
 ## Testing
@@ -167,110 +156,16 @@ const items = await getAwesomeItems({
 npm run inspector
 ```
 
-### Unit Tests
-```bash
-npm test
-```
-
-### Manual Testing
-```bash
-# Build the project
-npm run build
-
-# Test with stdio transport (default)
-node build/index.js --debug
-
-# Test with HTTP transport
-node build/index.js --transport http --port 3001 --debug
-```
-
-## API Backend
-
-This MCP server requires the awesome-context backend API to be running. The backend provides:
-
-- `/api/find-section`: Section discovery endpoint
-- `/api/get-items`: Item retrieval endpoint
-
-Default backend location: `http://localhost:3000`
-
-## Error Handling
-
-The server provides comprehensive error handling for:
-
-- API connection failures
-- Invalid parameters
-- Rate limiting
-- Token limits exceeded
-- Malformed responses
-- Network timeouts
-
-All errors are returned with descriptive messages to help diagnose issues.
-
-## Performance Considerations
-
-- **Caching**: The server implements in-memory caching for frequently accessed sections
-- **Token Counting**: Efficient token estimation algorithm for accurate limits
-- **Streaming**: Large responses are streamed for better performance
-- **Connection Pooling**: HTTP requests use connection pooling for efficiency
-
-## Security
-
-- All user inputs are validated before API calls
-- API responses are sanitized before returning to clients
-- Supports API key authentication for backend access
-- No sensitive information is logged
-- HTTPS recommended for production deployments
-
-## Development
-
-### Project Structure
-```
-awesome-context-mcp/
-├── src/
-│   ├── index.ts          # Main server implementation
-│   ├── api-client.ts     # Backend API client
-│   ├── config.ts         # Configuration management
-│   └── types.ts          # TypeScript definitions
-├── build/                # Compiled JavaScript
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-### Building
-```bash
-npm run build
-```
-
-### Development Mode
-```bash
-npm run dev
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"Cannot connect to API"**
-   - Ensure the backend API is running
-   - Check the API host configuration
-   - Verify network connectivity
-
-2. **"Invalid parameters"**
-   - Either `listId` or `githubRepo` must be provided for `get_awesome_items`
-   - Query is required for `find_awesome_section`
-
-3. **"Token limit exceeded"**
-   - Increase the `tokens` parameter
-   - Use pagination with `offset` parameter
-   - Filter by section to reduce results
 
 ### Debug Mode
 
 Enable debug logging to see detailed information:
 
 ```bash
-awesome-context-mcp --debug
+npm run start -- --debug
+
+# Or in development mode
+npm run dev -- --debug
 ```
 
 ## Contributing
@@ -290,8 +185,12 @@ MIT
 ## Support
 
 For issues and questions:
-- GitHub Issues: [https://github.com/your-org/awesome-context-mcp/issues](https://github.com/your-org/awesome-context-mcp/issues)
-- Documentation: [https://docs.awesome-context.com](https://docs.awesome-context.com)
+- GitHub Issues: [https://github.com/your-org/context-awesome/issues](https://github.com/your-org/context-awesome/issues)
+- Documentation: [https://docs.context-awesome.com](https://docs.context-awesome.com)
+
+## Attribution
+
+This project uses data from over 8,500 awesome lists on GitHub. See [ATTRIBUTION.md](./ATTRIBUTION.md) for a complete list of all repositories whose data is included.
 
 ## Credits
 
