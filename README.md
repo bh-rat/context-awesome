@@ -4,6 +4,9 @@
 
 A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 1mn+ (growing) awesome row items.
 
+**What are Awesome Lists?** 
+Awesome lists are community-curated collections of the best tools, libraries, and resources on any topic - from machine learning frameworks to design tools. By adding this MCP server, your AI agents get instant access to these high-quality, vetted resources instead of relying on random web searches.
+
 Perfect for : 
 1. Knowledge worker agents to get the most relevant references for their work
 2. The source for the best learning resources
