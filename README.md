@@ -1,101 +1,17 @@
-# Awesome Context MCP Server
+# context-awesome : awesome references for your agents
 
-An MCP (Model Context Protocol) server that provides access to curated awesome list documentation through intelligent search and retrieval tools.
+[![MCP Server](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io)
 
-## Features
+A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 1mn+ (growing) awesome row items.
 
-- **Smart Section Discovery**: Find relevant sections across thousands of awesome lists using natural language queries
-- **Token-Limited Retrieval**: Get items from specific lists with configurable token limits for optimal LLM context usage
-- **Multiple Transport Options**: Support for stdio (default), HTTP, and SSE transports
-- **Flexible Configuration**: Configure via environment variables, command-line arguments, or configuration files
-- **Rich Metadata**: Returns comprehensive information including GitHub stars, descriptions, tags, and more
+Perfect for : 
+1. Knowledge worker agents to get the most relevant references for their work
+2. The source for the best learning resources
+3. Deep research can quickly gather a lot of high quality resources for any topic.
+4. Search agents
 
-## Installation
+https://github.com/user-attachments/assets/babab991-e4ff-4433-bdb7-eb7032e9cd11
 
-### Global Installation
-```bash
-npm install -g @awesome-context/mcp-server
-```
-
-### Local Installation
-```bash
-npm install @awesome-context/mcp-server
-```
-
-### Development Setup
-```bash
-git clone https://github.com/your-org/awesome-context-mcp.git
-cd awesome-context-mcp
-npm install
-npm run build
-```
-
-## Configuration
-
-### Environment Variables
-- `AWESOME_CONTEXT_API_HOST`: Backend API URL (default: `http://localhost:3000`)
-- `AWESOME_CONTEXT_API_KEY`: Optional API key for backend authentication
-
-### Command-Line Arguments
-```bash
-awesome-context-mcp [options]
-
-Options:
-  --transport <stdio|http|sse>  Transport mechanism (default: stdio)
-  --port <number>               Port for HTTP transport (default: 3000)
-  --api-host <url>             Backend API host
-  --api-key <key>              Optional API key for backend
-  --debug                      Enable debug logging
-  --help                       Show help
-```
-
-## MCP Client Configuration
-
-### Claude Desktop
-
-Add to your Claude Desktop configuration file:
-
-```json
-{
-  "mcpServers": {
-    "awesome-context": {
-      "command": "npx",
-      "args": ["-y", "@awesome-context/mcp-server"],
-      "env": {
-        "AWESOME_CONTEXT_API_HOST": "https://api.awesome-context.com"
-      }
-    }
-  }
-}
-```
-
-### Cursor/VS Code
-
-Add to your settings:
-
-```json
-{
-  "mcpServers": {
-    "awesome-context": {
-      "command": "node",
-      "args": ["/path/to/awesome-context-mcp/build/index.js"],
-      "env": {
-        "AWESOME_CONTEXT_API_HOST": "https://api.awesome-context.com"
-      }
-    }
-  }
-}
-```
-
-### Custom Integration
-
-For HTTP transport:
-
-```bash
-awesome-context-mcp --transport http --port 3001 --api-host https://api.awesome-context.com
-```
-
-Then configure your client to connect to `http://localhost:3001/mcp`
 
 ## Available Tools
 
@@ -109,11 +25,10 @@ Discovers sections and categories across awesome lists matching your search quer
 - `limit` (optional): Maximum sections to return (1-50, default: 10)
 
 **Example Usage:**
-```
+"Give me the best machine learning resources for learning ML related to python in couple of months."
+"What are the best resources for authoring technical books ?"
 "Find awesome list sections about React hooks"
-"Search for database tools in Go awesome lists"
-"Show me machine learning resources"
-```
+"Search for database ORMs in Go awesome lists"
 
 ### 2. `get_awesome_items`
 
@@ -128,150 +43,487 @@ Retrieves items from a specific list or section with token limiting for optimal 
 
 **Example Usage:**
 ```
-"Get items from sindresorhus/awesome"
 "Show me the testing tools section from awesome-rust"
 "Get the next 20 items from awesome-python (offset: 20)"
+"Get items from bh-rat/awesome-mcp-enterprise"
 ```
 
-## Usage Patterns
 
-### Two-Step Discovery Pattern
+## Installation
 
-The server follows a two-step pattern for optimal results:
+### Remote Server (Recommended)
 
-1. **Discovery**: Use `find_awesome_section` to find relevant sections
-2. **Retrieval**: Use `get_awesome_items` to get detailed items from those sections
+Context Awesome is available as a hosted MCP server. No installation required!
 
-### Example Workflow
+<details>
+<summary><b>Install in Cursor</b></summary>
 
-```typescript
-// Step 1: Find React-related sections
-const sections = await findAwesomeSection({
-  query: "react hooks",
-  confidence: 0.5,
-  limit: 5
-});
+Go to: `Settings` -> `Cursor Settings` -> `MCP` -> `Add new global MCP server`
 
-// Step 2: Get items from the most relevant section
-const items = await getAwesomeItems({
-  githubRepo: sections[0].githubRepo,
-  section: sections[0].category,
-  tokens: 5000
-});
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Claude Code</b></summary>
+
+```sh
+claude mcp add --transport http context-awesome https://www.context-awesome.com/api/mcp
+```
+</details>
+
+<details>
+<summary><b>Install in Windsurf</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "serverUrl": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in VS Code</b></summary>
+
+```json
+"mcp": {
+  "servers": {
+    "context-awesome": {
+      "type": "http",
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Claude Desktop</b></summary>
+
+Navigate to Settings > Connectors > Add Custom Connector. Enter:
+- Name: `Context Awesome`
+- URL: `https://www.context-awesome.com/api/mcp`
+</details>
+
+See [Additional Installation Methods](#additional-installation-methods) for other MCP clients.
+
+## Local Setup
+
+For development or self-hosting:
+
+```bash
+git clone https://github.com/bh-rat/context-awesome.git
+cd context-awesome
+npm install
+npm run build
 ```
 
-## Testing
+### Configuration
+
+#### Running the Server
+
+```bash
+# Development mode (runs from source)
+npm run dev -- [options]
+
+# Production mode (runs compiled version)
+npm run start -- [options]
+
+Options:
+  --transport <stdio|http|sse>  Transport mechanism (default: stdio)
+  --port <number>               Port for HTTP transport (default: 3000)
+  --api-host <url>             Backend API host (default: https://api.context-awesome.com)
+  --debug                      Enable debug logging
+  --help                       Show help
+```
+
+#### Examples
+
+```bash
+# Run with default settings (stdio transport)
+npm run start
+
+# Run with HTTP transport on port 3001
+npm run start -- --transport http --port 3001
+
+# Run with custom API host and key
+npm run start -- --api-host https://api.context-awesome.com
+```
+
+### MCP Client Configuration
+
+<details>
+<summary><b>Claude Desktop</b></summary>
+
+Add to your Claude Desktop configuration file:
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "command": "node",
+      "args": ["/path/to/context-awesome/build/index.js"],
+      "env": {
+        "CONTEXT_AWESOME_API_HOST": "https://api.context-awesome.com"
+      }
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Cursor/VS Code</b></summary>
+
+Add to your settings:
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "command": "node",
+      "args": ["/path/to/context-awesome/build/index.js"],
+      "env": {
+        "CONTEXT_AWESOME_API_HOST": "https://api.context-awesome.com"
+      }
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Custom Integration</b></summary>
+
+For HTTP transport:
+
+```bash
+npm run start -- --transport http --port 3001 --api-host https://api.context-awesome.com
+```
+
+Then configure your client to connect to `http://localhost:3001/mcp`
+</details>
+
+
+### Testing
 
 ### With MCP Inspector
 ```bash
 npm run inspector
 ```
 
-### Unit Tests
-```bash
-npm test
-```
-
-### Manual Testing
-```bash
-# Build the project
-npm run build
-
-# Test with stdio transport (default)
-node build/index.js --debug
-
-# Test with HTTP transport
-node build/index.js --transport http --port 3001 --debug
-```
-
-## API Backend
-
-This MCP server requires the awesome-context backend API to be running. The backend provides:
-
-- `/api/find-section`: Section discovery endpoint
-- `/api/get-items`: Item retrieval endpoint
-
-Default backend location: `http://localhost:3000`
-
-## Error Handling
-
-The server provides comprehensive error handling for:
-
-- API connection failures
-- Invalid parameters
-- Rate limiting
-- Token limits exceeded
-- Malformed responses
-- Network timeouts
-
-All errors are returned with descriptive messages to help diagnose issues.
-
-## Performance Considerations
-
-- **Caching**: The server implements in-memory caching for frequently accessed sections
-- **Token Counting**: Efficient token estimation algorithm for accurate limits
-- **Streaming**: Large responses are streamed for better performance
-- **Connection Pooling**: HTTP requests use connection pooling for efficiency
-
-## Security
-
-- All user inputs are validated before API calls
-- API responses are sanitized before returning to clients
-- Supports API key authentication for backend access
-- No sensitive information is logged
-- HTTPS recommended for production deployments
-
-## Development
-
-### Project Structure
-```
-awesome-context-mcp/
-├── src/
-│   ├── index.ts          # Main server implementation
-│   ├── api-client.ts     # Backend API client
-│   ├── config.ts         # Configuration management
-│   └── types.ts          # TypeScript definitions
-├── build/                # Compiled JavaScript
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-### Building
-```bash
-npm run build
-```
-
-### Development Mode
-```bash
-npm run dev
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"Cannot connect to API"**
-   - Ensure the backend API is running
-   - Check the API host configuration
-   - Verify network connectivity
-
-2. **"Invalid parameters"**
-   - Either `listId` or `githubRepo` must be provided for `get_awesome_items`
-   - Query is required for `find_awesome_section`
-
-3. **"Token limit exceeded"**
-   - Increase the `tokens` parameter
-   - Use pagination with `offset` parameter
-   - Filter by section to reduce results
 
 ### Debug Mode
 
 Enable debug logging to see detailed information:
 
 ```bash
-awesome-context-mcp --debug
+npm run start -- --debug
+
+# Or in development mode
+npm run dev -- --debug
 ```
+
+## Additional Installation Methods
+
+<details>
+<summary><b>Install in Cline</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Zed</b></summary>
+
+```json
+{
+  "context_servers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Augment Code</b></summary>
+
+1. Click the hamburger menu
+2. Select **Settings**
+3. Navigate to **Tools**
+4. Click **+ Add MCP**
+5. Enter URL: `https://www.context-awesome.com/api/mcp`
+6. Name: **Context Awesome**
+</details>
+
+<details>
+<summary><b>Install in Roo Code</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "type": "streamable-http",
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Gemini CLI</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "httpUrl": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Opencode</b></summary>
+
+```json
+"mcp": {
+  "context-awesome": {
+    "type": "remote",
+    "url": "https://www.context-awesome.com/api/mcp",
+    "enabled": true
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in JetBrains AI Assistant</b></summary>
+
+1. Go to `Settings` -> `Tools` -> `AI Assistant` -> `Model Context Protocol (MCP)`
+2. Click `+ Add`
+3. Configure URL: `https://www.context-awesome.com/api/mcp`
+4. Click `OK` and `Apply`
+</details>
+
+<details>
+<summary><b>Install in Kiro</b></summary>
+
+1. Navigate `Kiro` > `MCP Servers`
+2. Click `+ Add`
+3. Configure URL: `https://www.context-awesome.com/api/mcp`
+4. Click `Save`
+</details>
+
+<details>
+<summary><b>Install in Trae</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Amazon Q Developer CLI</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Warp</b></summary>
+
+1. Navigate `Settings` > `AI` > `Manage MCP servers`
+2. Click `+ Add`
+3. Configure URL: `https://www.context-awesome.com/api/mcp`
+4. Click `Save`
+</details>
+
+<details>
+<summary><b>Install in Copilot Coding Agent</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "type": "http",
+      "url": "https://www.context-awesome.com/api/mcp",
+      "tools": ["find_awesome_section", "get_awesome_items"]
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in LM Studio</b></summary>
+
+1. Navigate to `Program` > `Install` > `Edit mcp.json`
+2. Add:
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in BoltAI</b></summary>
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Perplexity Desktop</b></summary>
+
+1. Navigate `Perplexity` > `Settings`
+2. Select `Connectors`
+3. Click `Add Connector`
+4. Select `Advanced`
+5. Enter Name: `Context Awesome`
+6. Enter URL: `https://www.context-awesome.com/api/mcp`
+</details>
+
+<details>
+<summary><b>Install in Visual Studio 2022</b></summary>
+
+```json
+{
+  "inputs": [],
+  "servers": {
+    "context-awesome": {
+      "type": "http",
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Crush</b></summary>
+
+```json
+{
+  "$schema": "https://charm.land/crush.json",
+  "mcp": {
+    "context-awesome": {
+      "type": "http",
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Rovo Dev CLI</b></summary>
+
+```bash
+acli rovodev mcp
+```
+
+Then add:
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+<details>
+<summary><b>Install in Zencoder</b></summary>
+
+1. Go to Zencoder menu (...)
+2. Select Agent tools
+3. Click Add custom MCP
+4. Name: `Context Awesome`
+5. URL: `https://www.context-awesome.com/api/mcp`
+</details>
+
+<details>
+<summary><b>Install in Qodo Gen</b></summary>
+
+1. Open Qodo Gen chat panel
+2. Click Connect more tools
+3. Click + Add new MCP
+4. Add:
+
+```json
+{
+  "mcpServers": {
+    "context-awesome": {
+      "url": "https://www.context-awesome.com/api/mcp"
+    }
+  }
+}
+```
+</details>
+
+## Backend service
+
+This MCP server connects to backend API service that handles the heavy lifting of awesome list processing. 
+
+The backend service will be open-sourced soon, enabling the community to contribute to and benefit from the complete context-awesome ecosystem.
+
+
+## License
+
+MIT
+
 
 ## Contributing
 
@@ -283,15 +535,15 @@ Contributions are welcome! Please:
 4. Ensure all tests pass
 5. Submit a pull request
 
-## License
-
-MIT
-
 ## Support
 
 For issues and questions:
-- GitHub Issues: [https://github.com/your-org/awesome-context-mcp/issues](https://github.com/your-org/awesome-context-mcp/issues)
-- Documentation: [https://docs.awesome-context.com](https://docs.awesome-context.com)
+- GitHub Issues: [https://github.com/your-org/context-awesome/issues](https://github.com/your-org/context-awesome/issues)
+- Documentation: [https://docs.context-awesome.com](https://docs.context-awesome.com)
+
+## Attribution
+
+This project uses data from over 8,500 awesome lists on GitHub. See [ATTRIBUTION.md](./ATTRIBUTION.md) for a complete list of all repositories whose data is included.
 
 ## Credits
 

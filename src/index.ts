@@ -17,7 +17,7 @@ const DEFAULT_MINIMUM_TOKENS = 10000;
 const program = new Command()
   .option("--transport <stdio|http>", "transport type", "stdio")
   .option("--port <number>", "port for HTTP transport", "3000")
-  .option("--api-host <url>", "Backend API host URL", process.env.AWESOME_CONTEXT_API_HOST || "http://localhost:3000")
+  .option("--api-host <url>", "Backend API host URL", process.env.AWESOME_CONTEXT_API_HOST || "https://api.context-awesome.com")
   .option("--api-key <key>", "API key for authentication")
   .option("--debug", "Enable debug logging")
   .allowUnknownOption() // let MCP Inspector / other wrappers pass through extra flags
@@ -109,12 +109,12 @@ function createServerInstance(_clientIp?: string, apiKey?: string) {
 
   const server = new McpServer(
     {
-      name: "awesome-context",
+      name: "context-awesome",
       version: "1.0.0",
     },
     {
       instructions:
-        "Use this server to search and retrieve documentation from curated awesome lists. Always use find_awesome_section first to discover relevant sections, then use get_awesome_items to retrieve specific items.",
+        "Use this server to search and retrieve curated awesome lists of resources. Always use find_awesome_section first to discover relevant sections, then use get_awesome_items to retrieve specific items.",
     }
   );
 
@@ -123,22 +123,22 @@ function createServerInstance(_clientIp?: string, apiKey?: string) {
     "find_awesome_section",
     {
       title: "Find Awesome List Section",
-      description: `Discovers sections/categories across awesome lists matching a search query.
+      description: `Discovers sections/categories across awesome lists matching a search query and returns matching sections from awesome lists.
 
 You MUST call this function before 'get_awesome_items' to discover available sections UNLESS the user explicitly provides a githubRepo or listId.
 
 Selection Process:
 1. Analyze the query to understand what type of resources the user is looking for
 2. Return the most relevant matches based on:
-   - Name similarity to the query
-   - Category/section relevance
+   - Name similarity to the query and the awesome lists section
+   - Category/section relevance of the awesome lists 
    - Number of items in the section
    - Confidence score
 
 Response Format:
-- Returns matching sections with metadata
-- Includes repository information, item counts, and confidence scores
-- Use the githubRepo or listId from results for get_awesome_items
+- Returns matching sections of the awesome lists with metadata
+- Includes repository information, item counts, and confidence score
+- Use the githubRepo or listId with relevant sections from results for get_awesome_items
 
 For ambiguous queries, multiple relevant sections will be returned for the user to choose from.`,
       inputSchema: {
@@ -438,11 +438,11 @@ async function main() {
         extractBearerToken(req.headers.authorization) ||
         extractHeaderValue(req.headers["Awesome-Context-API-Key"]) ||
         extractHeaderValue(req.headers["X-API-Key"]) ||
-        extractHeaderValue(req.headers["awesome-context-api-key"]) ||
+        extractHeaderValue(req.headers["context-awesome-api-key"]) ||
         extractHeaderValue(req.headers["x-api-key"]) ||
-        extractHeaderValue(req.headers["Awesome_Context_API_Key"]) ||
+        extractHeaderValue(req.headers["Context_Awesome_API_Key"]) ||
         extractHeaderValue(req.headers["X_API_Key"]) ||
-        extractHeaderValue(req.headers["awesome_context_api_key"]) ||
+        extractHeaderValue(req.headers["context_awesome_api_key"]) ||
         extractHeaderValue(req.headers["x_api_key"]);
 
       try {
@@ -497,7 +497,7 @@ async function main() {
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(JSON.stringify({
             status: "healthy",
-            name: "awesome-context-mcp",
+            name: "context-awesome",
             version: "1.0.0",
             transport: transportType,
           }));
@@ -529,7 +529,7 @@ async function main() {
       httpServer.listen(port, () => {
         actualPort = port;
         console.error(
-          `Awesome Context MCP Server running on ${transportType.toUpperCase()} at http://localhost:${actualPort}/mcp with SSE endpoint at /sse`
+          `Context Awesome MCP Server running on ${transportType.toUpperCase()} at http://localhost:${actualPort}/mcp with SSE endpoint at /sse`
         );
       });
     };
@@ -541,7 +541,7 @@ async function main() {
     const server = createServerInstance(undefined, cliOptions.apiKey);
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error("Awesome Context MCP Server running on stdio");
+    console.error("Context Awesome MCP Server running on stdio");
   }
 }
 

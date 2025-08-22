@@ -40,6 +40,7 @@ export class AwesomeContextAPIClient {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'X-Source': 'context-awesome',
     };
 
     if (this.apiKey) {
@@ -48,18 +49,39 @@ export class AwesomeContextAPIClient {
 
     this.log(`Request: ${url.toString()}`);
 
+    // Add timeout to prevent hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     try {
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers,
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       const data = await response.json() as any;
 
       if (!response.ok) {
+        let errorMessage = data.message || `HTTP ${response.status}: ${response.statusText}`;
+        let errorCode = data.error || 'API_ERROR';
+        
+        // Provide better error messages for specific status codes
+        if (response.status === 429) {
+          errorMessage = 'Rate limited due to too many requests. Please try again later.';
+          errorCode = 'RATE_LIMIT';
+        } else if (response.status === 401) {
+          errorMessage = 'Unauthorized. Please check your API key.';
+          errorCode = 'UNAUTHORIZED';
+        } else if (response.status === 404) {
+          errorMessage = 'The requested resource was not found.';
+          errorCode = 'NOT_FOUND';
+        }
+        
         const error: APIError = {
-          code: data.error || 'API_ERROR',
-          message: data.message || `HTTP ${response.status}: ${response.statusText}`,
+          code: errorCode,
+          message: errorMessage,
           statusCode: response.status,
         };
         throw error;
@@ -68,8 +90,19 @@ export class AwesomeContextAPIClient {
       this.log(`Response:`, data);
       return data as T;
     } catch (error: any) {
+      clearTimeout(timeoutId);
+      
       if (error.code) {
         throw error;
+      }
+      
+      // Handle timeout specifically
+      if (error.name === 'AbortError') {
+        const apiError: APIError = {
+          code: 'TIMEOUT',
+          message: 'Request timeout after 30 seconds',
+        };
+        throw apiError;
       }
       
       const apiError: APIError = {
