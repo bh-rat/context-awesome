@@ -1,14 +1,13 @@
 # Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
+runtime: container
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
+
 startCommand:
   type: http
-  configSchema:
+  envSchema:
     type: object
-    description: Configuration for Context Awesome MCP server
-    properties:
-      CONTEXT_AWESOME_API_HOST:
-        type: string
-        description: "API host for the Context Awesome backend (default: https://api.context-awesome.com)"
-        default: "https://api.context-awesome.com"
-  exampleConfig:
-    CONTEXT_AWESOME_API_HOST: "https://api.context-awesome.com"
+    description: No configuration required
+  exampleConfig: {}
