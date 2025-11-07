@@ -15,6 +15,9 @@ Perfect for :
 
 https://github.com/user-attachments/assets/babab991-e4ff-4433-bdb7-eb7032e9cd11
 
+<a href="https://glama.ai/mcp/servers/@bh-rat/context-awesome">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@bh-rat/context-awesome/badge" alt="context-awesome MCP server" />
+</a>
 
 ## Available Tools
 
