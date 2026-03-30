@@ -121,6 +121,10 @@ Navigate to Settings > Connectors > Add Custom Connector. Enter:
 
 See [Additional Installation Methods](#additional-installation-methods) for other MCP clients.
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/bh-rat-context-awesome).
+
 ## Local Setup
 
 For development or self-hosting:
