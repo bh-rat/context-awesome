@@ -8,7 +8,11 @@
     "context-awesome": "build/cli.js",
     "context-awesome-mcp": "build/index.js"
   },
-  "files": ["build", "LICENSE", "README.md"],
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc && chmod +x build/index.js build/cli.js",
     "dev": "tsx src/index.ts",
@@ -16,10 +20,20 @@
     "inspector": "npx @modelcontextprotocol/inspector tsx src/index.ts",
     "test": "jest",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "npm run build",
     "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
-  "keywords": ["mcp", "model-context-protocol", "awesome-lists", "documentation", "cli"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "awesome-lists",
+    "documentation",
+    "cli"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -33,10 +47,16 @@
     "@types/jest": "^29.5.11",
     "@types/node": "^22.10.5",
     "@types/yargs": "^17.0.32",
+    "eslint": "^10.2.1",
+    "eslint-plugin-prettier": "^5.5.5",
     "jest": "^29.7.0",
+    "prettier": "^3.8.3",
     "ts-jest": "^29.1.2",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.59.0"
   },
-  "engines": { "node": ">=18.0.0" }
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
