@@ -1,4 +1,4 @@
-import { runSearch } from '../cli.js';
+import { runSearch } from '../commands.js';
 
 describe('runSearch', () => {
   beforeEach(() => {

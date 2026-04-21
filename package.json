@@ -5,12 +5,12 @@
   "main": "build/index.js",
   "type": "module",
   "bin": {
-    "context-awesome": "build/index.js",
+    "context-awesome": "build/cli.js",
     "context-awesome-mcp": "build/index.js"
   },
   "files": ["build", "LICENSE", "README.md"],
   "scripts": {
-    "build": "tsc && chmod +x build/index.js",
+    "build": "tsc && chmod +x build/index.js build/cli.js",
     "dev": "tsx src/index.ts",
     "start": "node build/index.js",
     "inspector": "npx @modelcontextprotocol/inspector tsx src/index.ts",

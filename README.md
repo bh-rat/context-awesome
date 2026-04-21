@@ -31,26 +31,26 @@ Every MCP tool has a 1:1 CLI subcommand — the server and the CLI expose the sa
 
 | Tool | CLI equivalent | What it does |
 |---|---|---|
-| `find_awesome_section` | `context-awesome lookup <query...>` | Discover sections/categories across awesome lists matching a query |
+| `find_awesome_section` | `context-awesome sections <query...>` | Discover sections/categories across awesome lists matching a query |
 | `search_awesome_items` | `context-awesome search <query...>` | Full-text search across individual items (tools/libraries/resources) |
-| `get_awesome_items` | `context-awesome docs <target>` | Fetch items from a known list + section, token-budgeted |
+| `get_awesome_items` | `context-awesome items <target>` | Fetch items from a known list + section, token-budgeted |
 
 ## CLI Commands
+
+The CLI (`context-awesome`) talks directly to the hosted backend. For the MCP server, use the separate `context-awesome-mcp` binary (see **Installation — MCP Clients** below).
 
 ```
 context-awesome <command> [options]
 
 Commands:
-  serve                      Run the MCP server (default)
+  sections <query...>        Find sections matching a query
   search <query...>          Search items (e.g., context-awesome search "postgres orm")
-  lookup <query...>          Find sections matching a query
-  docs <target>              Fetch items from a list (by owner/repo or listId)
+  items <target>             Fetch items from a list (by owner/repo or listId)
 
 Globals:
   --api-host <url>           Backend API host (env: CONTEXT_AWESOME_API_HOST)
   --api-key <key>            API key (env: CONTEXT_AWESOME_API_KEY)
   --json                     Emit raw JSON (for scripts)
-  --debug                    Verbose logging
 ```
 
 ### Install the CLI
@@ -59,7 +59,7 @@ Globals:
 npm install -g context-awesome
 context-awesome --help
 context-awesome search "rate limiter"
-context-awesome lookup "graph databases"
+context-awesome sections "graph databases"
 ```
 
 ### Use the CLI without installing
@@ -142,10 +142,12 @@ git clone https://github.com/bh-rat/context-awesome.git
 cd context-awesome
 npm install
 npm run build
-./build/index.js search "graph databases"
 
-# Or run from source
-npm run dev -- search "graph databases"
+# CLI
+./build/cli.js search "graph databases"
+
+# MCP server (stdio)
+./build/index.js --transport stdio
 
 # MCP Inspector
 npm run inspector

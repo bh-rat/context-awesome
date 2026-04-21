@@ -33,4 +33,4 @@ RUN npm ci --omit=dev
 EXPOSE 8080
 
 # Start the server with HTTP transport
-CMD ["node", "build/index.js", "serve", "--transport", "http", "--port", "8080"]
+CMD ["node", "build/index.js", "--transport", "http", "--port", "8080"]
