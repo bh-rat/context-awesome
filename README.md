@@ -4,10 +4,11 @@
 
 A Model Context Protocol (MCP) server that provides access to all the curated awesome lists and their items. It can provide the best resources for your agent from sections of the 8500+ awesome lists on github and more then 1mn+ (growing) awesome row items.
 
-**What are Awesome Lists?** 
+**What are Awesome Lists?**
 Awesome lists are community-curated collections of the best tools, libraries, and resources on any topic - from machine learning frameworks to design tools. By adding this MCP server, your AI agents get instant access to these high-quality, vetted resources instead of relying on random web searches.
 
-Perfect for : 
+Perfect for :
+
 1. Knowledge worker agents to get the most relevant references for their work
 2. The source for the best learning resources
 3. Deep research can quickly gather a lot of high quality resources for any topic.
@@ -15,13 +16,12 @@ Perfect for :
 
 https://github.com/user-attachments/assets/babab991-e4ff-4433-bdb7-eb7032e9cd11
 
-
 ## Two Ways to Use Context Awesome
 
-| Mode | Install | Good for |
-|---|---|---|
+| Mode           | Install                                                           | Good for                                                                   |
+| -------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | **MCP Server** | point your agent at the hosted URL or spawn `context-awesome-mcp` | Claude Desktop, Cursor, Windsurf, VS Code — agents that natively speak MCP |
-| **CLI** | `npm install -g context-awesome` | Scripts, shell workflows, editors without MCP support, CI jobs |
+| **CLI**        | `npm install -g context-awesome`                                  | Scripts, shell workflows, editors without MCP support, CI jobs             |
 
 Both modes ship from the same npm package (`context-awesome`) and hit the same hosted backend.
 
@@ -29,11 +29,11 @@ Both modes ship from the same npm package (`context-awesome`) and hit the same h
 
 Every MCP tool has a 1:1 CLI subcommand — the server and the CLI expose the same operations.
 
-| Tool | CLI equivalent | What it does |
-|---|---|---|
-| `find_awesome_section` | `context-awesome sections <query...>` | Discover sections/categories across awesome lists matching a query |
-| `search_awesome_items` | `context-awesome search <query...>` | Full-text search across individual items (tools/libraries/resources) |
-| `get_awesome_items` | `context-awesome items <target>` | Fetch items from a known list + section, token-budgeted |
+| Tool                   | CLI equivalent                        | What it does                                                         |
+| ---------------------- | ------------------------------------- | -------------------------------------------------------------------- |
+| `find_awesome_section` | `context-awesome sections <query...>` | Discover sections/categories across awesome lists matching a query   |
+| `search_awesome_items` | `context-awesome search <query...>`   | Full-text search across individual items (tools/libraries/resources) |
+| `get_awesome_items`    | `context-awesome items <target>`      | Fetch items from a known list + section, token-budgeted              |
 
 ## CLI Commands
 
@@ -88,6 +88,7 @@ Go to: `Settings` → `Cursor Settings` → `MCP` → `Add new global MCP server
   }
 }
 ```
+
 </details>
 
 <details>
@@ -96,12 +97,14 @@ Go to: `Settings` → `Cursor Settings` → `MCP` → `Add new global MCP server
 ```sh
 claude mcp add --transport http context-awesome https://www.context-awesome.com/api/mcp
 ```
+
 </details>
 
 <details>
 <summary><b>Install in Claude Desktop</b></summary>
 
 Settings → Connectors → Add Custom Connector.
+
 - Name: `Context Awesome`
 - URL: `https://www.context-awesome.com/api/mcp`
 </details>
@@ -110,6 +113,7 @@ Settings → Connectors → Add Custom Connector.
 <summary><b>Install in Windsurf / VS Code / Zed / JetBrains / LM Studio / ...</b></summary>
 
 Use the same URL (`https://www.context-awesome.com/api/mcp`) with each client's "add remote MCP" UI. See the dedicated sections below for exact snippets.
+
 </details>
 
 ### Local stdio (Claude Desktop, offline-capable)
@@ -171,6 +175,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -185,6 +190,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -211,6 +217,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -225,6 +232,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -239,6 +247,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -271,6 +280,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -285,6 +295,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -310,6 +321,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -327,6 +339,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -341,6 +354,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -368,6 +382,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -384,6 +399,7 @@ This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 a
   }
 }
 ```
+
 </details>
 
 <details>
@@ -404,6 +420,7 @@ Then add:
   }
 }
 ```
+
 </details>
 
 <details>
@@ -433,12 +450,12 @@ Then add:
   }
 }
 ```
+
 </details>
 
 ## License
 
 MIT
-
 
 ## Contributing
 
@@ -453,6 +470,7 @@ Contributions are welcome! Please:
 ## Support
 
 For issues and questions:
+
 - GitHub Issues: [https://github.com/bh-rat/context-awesome/issues](https://github.com/bh-rat/context-awesome/issues)
 
 ## Attribution
@@ -462,6 +480,7 @@ This project uses data from over 8,500 awesome lists on GitHub. See [ATTRIBUTION
 ## Credits
 
 Built with:
+
 - [Model Context Protocol SDK](https://github.com/anthropics/model-context-protocol)
 - [Awesome Lists](https://github.com/sindresorhus/awesome)
 - Inspired by [context7](https://github.com/upstash/context7) MCP server patterns

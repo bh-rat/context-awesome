@@ -6,10 +6,10 @@ import type {
   SearchItemsParams,
   SearchItemsResponse,
   APIError,
-} from './types.js';
+} from "./types.js";
 
 type FetchInit = {
-  method?: 'GET' | 'POST';
+  method?: "GET" | "POST";
   headers?: Record<string, string>;
   body?: string;
 };
@@ -20,28 +20,28 @@ export class AwesomeContextAPIClient {
   private debug: boolean;
 
   constructor(baseUrl: string, apiKey?: string, debug = false) {
-    this.baseUrl = baseUrl.replace(/\/$/, '');
+    this.baseUrl = baseUrl.replace(/\/$/, "");
     this.apiKey = apiKey;
     this.debug = debug;
   }
 
   private log(...args: unknown[]) {
-    if (this.debug) console.error('[API Client]', ...args);
+    if (this.debug) console.error("[API Client]", ...args);
   }
 
   private buildHeaders(extra: Record<string, string> = {}): Record<string, string> {
     const h: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'X-Source': 'context-awesome',
+      "Content-Type": "application/json",
+      "X-Source": "context-awesome",
       ...extra,
     };
-    if (this.apiKey) h['Authorization'] = `Bearer ${this.apiKey}`;
+    if (this.apiKey) h["Authorization"] = `Bearer ${this.apiKey}`;
     return h;
   }
 
   private async request<T>(
     endpoint: string,
-    opts: { params?: Record<string, unknown>; method?: 'GET' | 'POST'; body?: unknown } = {},
+    opts: { params?: Record<string, unknown>; method?: "GET" | "POST"; body?: unknown } = {}
   ): Promise<T> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     if (opts.params) {
@@ -51,7 +51,7 @@ export class AwesomeContextAPIClient {
     }
 
     const init: FetchInit = {
-      method: opts.method ?? 'GET',
+      method: opts.method ?? "GET",
       headers: this.buildHeaders(),
     };
     if (opts.body !== undefined) init.body = JSON.stringify(opts.body);
@@ -70,17 +70,17 @@ export class AwesomeContextAPIClient {
         const mapped: APIError = mapErrorResponse(response.status, data);
         throw mapped;
       }
-      this.log('response', data);
+      this.log("response", data);
       return data as T;
     } catch (err: any) {
       clearTimeout(timeout);
-      if (err && typeof err === 'object' && 'code' in err) throw err;
-      if (err?.name === 'AbortError') {
-        const e: APIError = { code: 'TIMEOUT', message: 'Request timeout after 30 seconds' };
+      if (err && typeof err === "object" && "code" in err) throw err;
+      if (err?.name === "AbortError") {
+        const e: APIError = { code: "TIMEOUT", message: "Request timeout after 30 seconds" };
         throw e;
       }
       const e: APIError = {
-        code: 'NETWORK_ERROR',
+        code: "NETWORK_ERROR",
         message: `Failed to connect to API: ${err?.message ?? String(err)}`,
       };
       throw e;
@@ -88,21 +88,21 @@ export class AwesomeContextAPIClient {
   }
 
   async findSections(params: FindSectionParams): Promise<FindSectionResponse> {
-    const response = await this.request<any>('/api/find-section', {
+    const response = await this.request<any>("/api/find-section", {
       params: { query: params.query, confidence: params.confidence, limit: params.limit },
     });
     const sections = response.results || response.sections || [];
     return {
       sections: sections.map((s: any) => ({
-        id: s.id ?? s._id ?? '',
-        listId: s.listId ?? '',
-        listName: s.listName ?? s.list_name ?? '',
-        githubRepo: s.githubRepo ?? s.github_repo ?? '',
-        category: s.category ?? s.section ?? '',
-        subcategory: s.subcategory ?? s.sub_category ?? '',
+        id: s.id ?? s._id ?? "",
+        listId: s.listId ?? "",
+        listName: s.listName ?? s.list_name ?? "",
+        githubRepo: s.githubRepo ?? s.github_repo ?? "",
+        category: s.category ?? s.section ?? "",
+        subcategory: s.subcategory ?? s.sub_category ?? "",
         itemCount: s.itemCount ?? s.item_count ?? 0,
         confidence: s.confidence ?? s.score ?? 0,
-        description: s.description ?? '',
+        description: s.description ?? "",
       })),
       total: response.total ?? sections.length,
     };
@@ -110,10 +110,13 @@ export class AwesomeContextAPIClient {
 
   async getItems(params: GetItemsParams): Promise<GetItemsResponse> {
     if (!params.listId && !params.githubRepo) {
-      const e: APIError = { code: 'INVALID_PARAMS', message: 'Either listId or githubRepo must be provided' };
+      const e: APIError = {
+        code: "INVALID_PARAMS",
+        message: "Either listId or githubRepo must be provided",
+      };
       throw e;
     }
-    const response = await this.request<any>('/api/get-items', {
+    const response = await this.request<any>("/api/get-items", {
       params: {
         listId: params.listId,
         githubRepo: params.githubRepo,
@@ -127,10 +130,10 @@ export class AwesomeContextAPIClient {
     const metadata = response.metadata || response.meta || {};
     return {
       items: items.map((i: any) => ({
-        id: i.id ?? i._id ?? '',
-        name: i.name ?? i.title ?? '',
-        description: i.description ?? '',
-        url: i.url ?? i.link ?? '',
+        id: i.id ?? i._id ?? "",
+        name: i.name ?? i.title ?? "",
+        description: i.description ?? "",
+        url: i.url ?? i.link ?? "",
         githubStars: i.stars ?? i.githubStars ?? i.github_stars,
         githubRepo: i.repo ?? i.githubRepo ?? i.github_repo,
         tags: i.tags ?? [],
@@ -138,10 +141,10 @@ export class AwesomeContextAPIClient {
       })),
       metadata: {
         list: {
-          id: metadata.list?.id ?? metadata.listId ?? params.listId ?? '',
-          name: metadata.list?.name ?? metadata.listName ?? '',
-          githubRepo: metadata.list?.githubRepo ?? metadata.githubRepo ?? params.githubRepo ?? '',
-          description: metadata.list?.description ?? metadata.description ?? '',
+          id: metadata.list?.id ?? metadata.listId ?? params.listId ?? "",
+          name: metadata.list?.name ?? metadata.listName ?? "",
+          githubRepo: metadata.list?.githubRepo ?? metadata.githubRepo ?? params.githubRepo ?? "",
+          description: metadata.list?.description ?? metadata.description ?? "",
           totalItems: metadata.pagination?.total ?? metadata.totalItems ?? items.length,
         },
         section: metadata.section ?? params.section,
@@ -159,12 +162,12 @@ export class AwesomeContextAPIClient {
   }
 
   async searchItems(params: SearchItemsParams): Promise<SearchItemsResponse> {
-    const response = await this.request<any>('/api/search', {
+    const response = await this.request<any>("/api/search", {
       params: {
         query: params.query,
         limit: params.limit,
         offset: params.offset,
-        categories: params.categories?.join(','),
+        categories: params.categories?.join(","),
         sortBy: params.sortBy,
       },
     });
@@ -179,8 +182,19 @@ export class AwesomeContextAPIClient {
 
 function mapErrorResponse(status: number, data: any): APIError {
   const baseMessage = data?.message ?? data?.error ?? `HTTP ${status}`;
-  if (status === 401) return { code: 'UNAUTHORIZED', message: 'Unauthorized. Please check your API key.', statusCode: 401 };
-  if (status === 404) return { code: 'NOT_FOUND', message: 'The requested resource was not found.', statusCode: 404 };
-  if (status === 429) return { code: 'RATE_LIMIT', message: 'Rate limited. Please try again later.', statusCode: 429 };
-  return { code: 'API_ERROR', message: baseMessage, statusCode: status };
+  if (status === 401)
+    return {
+      code: "UNAUTHORIZED",
+      message: "Unauthorized. Please check your API key.",
+      statusCode: 401,
+    };
+  if (status === 404)
+    return { code: "NOT_FOUND", message: "The requested resource was not found.", statusCode: 404 };
+  if (status === 429)
+    return {
+      code: "RATE_LIMIT",
+      message: "Rate limited. Please try again later.",
+      statusCode: 429,
+    };
+  return { code: "API_ERROR", message: baseMessage, statusCode: status };
 }

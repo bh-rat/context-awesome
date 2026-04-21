@@ -67,7 +67,7 @@ export interface GetItemsResponse {
 }
 
 export interface ServerConfig {
-  transport: 'stdio' | 'http' | 'sse';
+  transport: "stdio" | "http" | "sse";
   port: number;
   apiHost: string;
   apiKey?: string;
@@ -85,7 +85,7 @@ export interface SearchItemsParams {
   limit?: number;
   offset?: number;
   categories?: string[];
-  sortBy?: 'relevance' | 'stars' | 'recent';
+  sortBy?: "relevance" | "stars" | "recent";
 }
 
 export interface SearchItemResult {
