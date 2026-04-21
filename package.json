@@ -34,8 +34,16 @@
     "documentation",
     "cli"
   ],
-  "author": "",
+  "author": "Bharat Geleda <bharatgeleda@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bh-rat/context-awesome.git"
+  },
+  "homepage": "https://github.com/bh-rat/context-awesome#readme",
+  "bugs": {
+    "url": "https://github.com/bh-rat/context-awesome/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "commander": "^12.0.0",
