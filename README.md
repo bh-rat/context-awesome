@@ -157,9 +157,11 @@ npm run build
 npm run inspector
 ```
 
-## Backend Service
+## Backend service
 
-This package is a client; the heavy lifting (fetching, parsing, indexing ~9000 awesome repos) runs in the companion service at [context-awesome-backend](./context-awesome-backend). The backend is open-sourced alongside this repo.
+This MCP server and CLI connect to backend API service that handles the heavy lifting of awesome list processing.
+
+The backend service will be open-sourced soon, enabling the community to contribute to and benefit from the complete context-awesome ecosystem.
 
 ## Additional Installation Methods
 
