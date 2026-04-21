@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command, Option } from "commander";
+import pc from "picocolors";
 import { runSearch, runSections, runItems } from "./commands.js";
 
 const ENV_API_HOST =
@@ -12,7 +13,27 @@ const program = new Command();
 program
   .name("context-awesome")
   .description("CLI for querying curated awesome-list context")
-  .version("1.0.0");
+  .version("1.0.0")
+  .addHelpText(
+    "after",
+    `
+Examples:
+  ${pc.dim("# Find sections in awesome lists by topic")}
+  ${pc.green('context-awesome sections "graph databases"')}
+  ${pc.green('context-awesome sections "machine learning" --limit 5')}
+
+  ${pc.dim("# Search items across all lists")}
+  ${pc.green('context-awesome search "postgres ORM"')}
+  ${pc.green('context-awesome search "redis" --sort stars')}
+
+  ${pc.dim("# Fetch items from a specific list (owner/repo or UUID listId)")}
+  ${pc.green("context-awesome items sindresorhus/awesome")}
+  ${pc.green("context-awesome items sindresorhus/awesome --section Testing")}
+
+  ${pc.dim("# Output JSON for scripting")}
+  ${pc.green('context-awesome search "redis" --json')}
+`
+  );
 
 const apiHostOpt = () =>
   new Option("--api-host <url>", "Backend API host URL").default(ENV_API_HOST);
