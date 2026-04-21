@@ -13,7 +13,7 @@ const program = new Command();
 program
   .name("context-awesome")
   .description("CLI for querying curated awesome-list context")
-  .version("1.0.0")
+  .version("0.1.0")
   .addHelpText(
     "after",
     `

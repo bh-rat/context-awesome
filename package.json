@@ -1,6 +1,6 @@
 {
   "name": "context-awesome",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "CLI + MCP server for curated awesome-list context",
   "main": "build/index.js",
   "type": "module",

@@ -6,7 +6,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { createServerInstance } from "./mcp-server.js";
 
-const SERVER_VERSION = "1.0.0";
+const SERVER_VERSION = "0.1.0";
 const DEFAULT_PORT = 3000;
 const DEFAULT_API_HOST =
   process.env.AWESOME_CONTEXT_API_HOST ||

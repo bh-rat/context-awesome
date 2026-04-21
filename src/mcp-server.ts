@@ -16,7 +16,7 @@ export function createServerInstance(config: ServerConfig): McpServer {
   const apiClient = new AwesomeContextAPIClient(config.apiHost, config.apiKey, !!config.debug);
 
   const server = new McpServer(
-    { name: "context-awesome", version: "1.0.0" },
+    { name: "context-awesome", version: "0.1.0" },
     {
       instructions:
         "Use this server to search and retrieve curated awesome lists. Prefer `find_awesome_section` when you want a whole section, `search_awesome_items` for individual tools/resources, and `get_awesome_items` to fetch items from a known list/section.",
