@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "outDir": "./build",
     "rootDir": "./src",
     "strict": true,
@@ -22,5 +22,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "dist"]
+  "exclude": ["node_modules", "build", "dist", "src/**/__tests__/**", "src/**/*.test.ts"]
 }

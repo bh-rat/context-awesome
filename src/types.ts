@@ -67,7 +67,7 @@ export interface GetItemsResponse {
 }
 
 export interface ServerConfig {
-  transport: 'stdio' | 'http' | 'sse';
+  transport: "stdio" | "http" | "sse";
   port: number;
   apiHost: string;
   apiKey?: string;
@@ -78,4 +78,31 @@ export interface APIError {
   code: string;
   message: string;
   statusCode?: number;
+}
+
+export interface SearchItemsParams {
+  query: string;
+  limit?: number;
+  offset?: number;
+  categories?: string[];
+  sortBy?: "relevance" | "stars" | "recent";
+}
+
+export interface SearchItemResult {
+  id: string;
+  name: string;
+  url: string;
+  description: string | null;
+  category: string | null;
+  subcategory: string | null;
+  githubRepo: string;
+  stars?: number;
+  score?: number;
+}
+
+export interface SearchItemsResponse {
+  results: SearchItemResult[];
+  total: number;
+  took: number;
+  query: string;
 }
