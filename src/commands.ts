@@ -34,7 +34,13 @@ export async function runSearch(opts: SearchCliOptions): Promise<number> {
     if (r.description) process.stdout.write(`   ${r.description}\n`);
     process.stdout.write("\n");
   }
-  process.stdout.write(`${response.total} total • ${response.took}ms\n`);
+  if (response.totalExact && typeof response.total === "number") {
+    process.stdout.write(`${response.total} total • ${response.took}ms\n`);
+  } else {
+    process.stdout.write(
+      `Showing ${response.results.length}${response.hasMore ? "+" : ""} results • ${response.took}ms\n`
+    );
+  }
   return 0;
 }
 
