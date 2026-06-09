@@ -45,7 +45,7 @@
     "url": "https://github.com/bh-rat/context-awesome/issues"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "commander": "^12.0.0",
     "node-fetch": "^3.3.2",
     "picocolors": "^1.1.1",
