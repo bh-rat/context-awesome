@@ -173,7 +173,9 @@ export class AwesomeContextAPIClient {
     });
     return {
       results: response.results ?? [],
-      total: response.total ?? response.results?.length ?? 0,
+      total: typeof response.total === "number" ? response.total : undefined,
+      totalExact: response.totalExact ?? (typeof response.total === "number"),
+      hasMore: response.hasMore ?? false,
       took: response.took ?? 0,
       query: response.query ?? params.query,
     };

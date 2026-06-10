@@ -91,7 +91,9 @@ export function renderSearchItems(query: string, response: SearchItemsResponse):
     .join("\n---\n\n");
   return `# Search results for "${query}"
 
-Showing ${response.results.length} of ${response.total} total in ${response.took}ms.
+${response.totalExact && typeof response.total === "number"
+    ? `Showing ${response.results.length} of ${response.total} total in ${response.took}ms.`
+    : `Showing ${response.results.length}${response.hasMore ? "+" : ""} results in ${response.took}ms.`}
 
 ${body}`;
 }

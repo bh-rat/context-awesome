@@ -102,7 +102,9 @@ export interface SearchItemResult {
 
 export interface SearchItemsResponse {
   results: SearchItemResult[];
-  total: number;
+  total?: number;
+  totalExact?: boolean;
+  hasMore?: boolean;
   took: number;
   query: string;
 }
