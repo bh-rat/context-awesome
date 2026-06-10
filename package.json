@@ -1,6 +1,7 @@
 {
   "name": "context-awesome",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpName": "io.github.bh-rat/context-awesome",
   "description": "CLI + MCP server for curated awesome-list context",
   "main": "build/index.js",
   "type": "module",

@@ -1,12 +1,28 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.bh-rat/context-awesome",
+  "title": "Context Awesome",
   "description": "MCP server for accessing curated awesome list documentation",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "websiteUrl": "https://www.context-awesome.com",
+  "repository": {
+    "url": "https://github.com/bh-rat/context-awesome",
+    "source": "github"
+  },
   "remotes": [
     {
       "type": "streamable-http",
       "url": "https://www.context-awesome.com/api/mcp"
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "context-awesome",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      }
     }
   ]
 }
